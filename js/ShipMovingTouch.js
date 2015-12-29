@@ -10,7 +10,8 @@ ShipMoving = function(x,y) {
 	var thrustSize = 0; 
 	
 	var canvas = this.canvas = document.createElement("canvas"); 
-	
+
+	canvas.id = "nau"
 	canvas.width = 60; 
 	canvas.height = 60;
 	canvas.style = "display:block; position:absolute; background-color:'#ff0000';"; 

@@ -10,9 +10,9 @@
 	  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
 	  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
 	/* make transparent link selection, adjust last value opacity 0 to 1.0 */
-	  -webkit-tap-highlight-color: rgba(0,0,0,0); 
+	  -webkit-tap-highlight-color: rgba(0,0,0,0);
 	  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
-	  -webkit-tap-highlight-color: rgba(0,0,0,0); 
+	  -webkit-tap-highlight-color: rgba(0,0,0,0);
 	}
 	
 	body {
@@ -72,8 +72,33 @@ if(touchable) {
 	window.onorientationchange = resetCanvas;  
 	window.onresize = resetCanvas;  
 } else {
-	
-	canvas.addEventListener( 'mousemove', onMouseMove, false );
+
+	window.addEventListener("gamepadconnected", function(e) {
+		var nau;
+		nau = document.getElementById("nau");
+		updateLoop();
+	});
+}
+
+function updateLoop() {
+
+	var gp = navigator.getGamepads()[0];
+
+	if (gp.buttons[1].pressed) {
+		makeBullet();
+	}
+
+	var left = (gp.axes[0] + 1) / 2 * (window.innerWidth);
+	var right = (gp.axes[1] + 1) / 2 * (window.innerHeight);
+	var rotationLeft = (gp.axes[2]) / 2 * (window.innerHeight);
+
+	ship.pos.x = left;
+	ship.pos.y = right;
+	ship.angle = rotationLeft;
+
+
+	requestAnimationFrame(updateLoop);
+
 }
 
 function resetCanvas (e) {  
@@ -145,18 +170,18 @@ function draw() {
 				c.beginPath(); 
 				c.strokeStyle = "cyan"; 
 				c.arc(leftTouchPos.x, leftTouchPos.y, 40, 0,Math.PI*2, true); 
-				c.stroke(); 
-				
-			} else {
-				
-				c.beginPath(); 
-				c.fillStyle = "white";
-				c.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30); 
+				c.stroke();
 
-				c.beginPath(); 
+			} else {
+
+				c.beginPath();
+				c.fillStyle = "white";
+				c.fillText("touch id : "+touch.identifier+" x:"+touch.clientX+" y:"+touch.clientY, touch.clientX+30, touch.clientY-30);
+
+				c.beginPath();
 				c.strokeStyle = "red";
 				c.lineWidth = "6";
-				c.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true); 
+				c.arc(touch.clientX, touch.clientY, 40, 0, Math.PI*2, true);
 				c.stroke();
 			}
 		}
